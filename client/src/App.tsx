@@ -1,4 +1,5 @@
 // import { useState } from 'react'
+import AppRoutes from './AppRoutes'
 import Header from './components/Header'
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
   return (
     <>
       <Header/>
+        <AppRoutes/>
     </>
   )
 }
