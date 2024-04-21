@@ -15,3 +15,5 @@ export const getAllFoodsByTag = async (tagName: string): Promise<Food[]> => {
     if (tagName === 'All') return await getAll();
     return sampleFoodItems.filter(food => food.tags?.includes(tagName)) as Food[]
 }
+
+export const getById = async (id: number): Promise<Food> => sampleFoodItems.find(food => food.id === id) as Food;

@@ -36,7 +36,7 @@ export default function HomePage() {
     return (
         <>
             <Search/>
-            <Tags tags={tags}/>
+            <Tags tags={tags} showCount/>
             <Thumbnails foods={foods}/></>
     )
 }

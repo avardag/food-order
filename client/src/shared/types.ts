@@ -12,6 +12,6 @@ export interface Food {
 
 export interface TagList {
     name: string
-    count: number
+    count?: number
 }
     

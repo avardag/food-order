@@ -4,20 +4,20 @@ import { TagList } from '../../shared/types';
 
 interface TagProps {
     tags: TagList[];
-    forFoodPage?: boolean;
+    showCount?: boolean;
 }
-export default function Tags({ tags, forFoodPage }:TagProps) {
+export default function Tags({ tags, showCount }:TagProps) {
     return (
         <div
             className={styles.container}
             style={{
-                justifyContent: forFoodPage ? 'start' : 'center',
+                justifyContent: showCount ? 'center' : 'start',
             }}
         >
             {tags.map(tag => (
                 <Link key={tag.name} to={`/tag/${tag.name}`}>
                     {tag.name}
-                    {!forFoodPage && `(${tag.count})`}
+                    {showCount && `(${tag.count})`}
                 </Link>
             ))}
         </div>

@@ -1,6 +1,6 @@
-import { TagList } from "./shared/types"
+import {Food, TagList } from "./shared/types"
 
-export const sampleFoodItems = [
+export const sampleFoodItems:Food[] = [
     {
         id: 1,
         name: "Pizza",
