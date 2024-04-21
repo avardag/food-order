@@ -1,4 +1,4 @@
-export interface Food{
+export interface Food {
     id: number
     name: string
     price: number
@@ -9,3 +9,9 @@ export interface Food{
     imageUrl: string
     tags: string[]
 }
+
+export interface TagList {
+    name: string
+    count: number
+}
+    
