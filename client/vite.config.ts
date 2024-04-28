@@ -8,7 +8,12 @@ export default defineConfig(({mode})=>{
     plugins: [react()],
     server: {
       proxy: {
-        "/api": env.API_URL || "http://localhost:5177",
+        "/api": {
+          target: env.API_URL || "https://localhost:7200",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
+          secure: false
+        }
       }
     }
   }

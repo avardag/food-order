@@ -7,6 +7,7 @@ import Tags from "../../components/Tags";
 import Price from "../../components/Price";
 import { getById } from "../../services/foodService";
 import useCart from "../../hooks/useCart";
+import NotFound from "../../components/NotFound";
 
 export default function FoodPage() {
   const [food, setFood] = useState<Food | null>(null);
@@ -33,7 +34,7 @@ export default function FoodPage() {
   return (
     <>
       {!food ? (
-        <h1>Food not found</h1>
+        <NotFound message="Food not found" linkText="Back to home page" />
       ) : (
         <div className={styles.container}>
           <img
@@ -86,4 +87,3 @@ export default function FoodPage() {
     </>
   );
 }
-

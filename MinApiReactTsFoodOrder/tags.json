@@ -1,0 +1,11 @@
+[
+  { "name": "All", "count": 8 },
+  { "name": "Fast", "count": 2 },
+  { "name": "Pizza", "count": 2 },
+  { "name": "Vegan", "count": 2 },
+  { "name": "Meat", "count": 1 },
+  { "name": "Breakfast", "count": 1 },
+  { "name": "Lunch", "count": 3 },
+  { "name": "Vegetarian", "count": 2 },
+  { "name": "Pasta", "count": 1 }
+]

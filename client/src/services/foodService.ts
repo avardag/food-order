@@ -1,19 +1,29 @@
-import {sampleFoodItems, sampleTags} from "../data";
-import {Food, TagList} from "../shared/types";
+import axios from "axios";
+import { Food, TagList } from "../shared/types";
 
-export const getAll = async (): Promise<Food[]> => sampleFoodItems as Food[];
+export const getAll = async (): Promise<Food[]> => {
+  const { data } = await axios.get("/api/food");
+  return data;
+};
 
 export const searchFood = async (searchTerm: string): Promise<Food[]> => {
-    // const foods = await getAll();
-    return sampleFoodItems.filter(food => food.name.toLowerCase().includes(searchTerm.toLowerCase())) as Food[]
-}
+  const { data } = await axios.get("/api/food/search/" + searchTerm);
+  return data;
+};
 
-export const getAllTags = async (): Promise<TagList[]> => sampleTags
-;
+export const getAllTags = async (): Promise<TagList[]> => {
+  const { data } = await axios.get("/api/tags");
+  return data;
+};
 
 export const getAllFoodsByTag = async (tagName: string): Promise<Food[]> => {
-    if (tagName === 'All') return await getAll();
-    return sampleFoodItems.filter(food => food.tags?.includes(tagName)) as Food[]
-}
+  if (tagName === "All") return await getAll();
+  const { data } = await axios.get("/api/food/tag/" + tagName);
+  return data;
+};
 
-export const getById = async (id: number): Promise<Food> => sampleFoodItems.find(food => food.id === id) as Food;
+export const getById = async (id: number): Promise<Food> => {
+  const { data } = await axios.get("/api/food/" + id);
+  return data;
+};
+

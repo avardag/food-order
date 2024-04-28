@@ -3,6 +3,7 @@ import Price from "../../components/Price";
 import Title from "../../components/Title";
 import types from "./cartPage.module.css";
 import useCart from "../../hooks/useCart";
+import NotFound from "../../components/NotFound";
 // import NotFound from '../../components/NotFound/NotFound';
 
 export default function CartPage() {
@@ -18,7 +19,7 @@ export default function CartPage() {
       <Title title="Cart Page" margin="1.5rem 0 0 2.5rem" />
 
       {cartItems.length === 0 ? (
-        <p>Not found</p>
+        <NotFound message="Your Cart is empty" />
       ) : (
         <div className={types.container}>
           <ul className={types.list}>
