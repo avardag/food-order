@@ -34,7 +34,6 @@ public class FoodsController : ControllerBase
             Name = foodDto.Name,
             Price = foodDto.Price,
             ImageUrl = foodDto.ImageUrl,
-            Tags = foodDto.Tags
         };
         
         _dbContext.Foods.Add(food);

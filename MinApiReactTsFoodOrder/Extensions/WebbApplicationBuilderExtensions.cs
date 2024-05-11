@@ -27,9 +27,10 @@ public  static class WebbApplicationBuilderExtensions
                 options.SignIn.RequireConfirmedAccount = false;
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
+                options.Password.RequireUppercase = false; 
+                // options.Password.RequireLowercase = true;
             })
             .AddRoles<IdentityRole>()
             .AddSignInManager()
@@ -48,7 +49,7 @@ public  static class WebbApplicationBuilderExtensions
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtSettings.SigninKey ?? throw new InvalidOperationException())
+                        Encoding.UTF8.GetBytes(jwtSettings.SigningKey ?? throw new InvalidOperationException())
                     ),
                     ValidateIssuer = true,
                     ValidIssuer = jwtSettings.Issuer,
@@ -63,7 +64,7 @@ public  static class WebbApplicationBuilderExtensions
         return builder;
     }
 
-    public static IServiceCollection AssSwagger(this IServiceCollection services)
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(option =>
         {

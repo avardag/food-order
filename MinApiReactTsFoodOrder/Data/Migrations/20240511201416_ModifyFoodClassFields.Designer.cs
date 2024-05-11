@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MinApiReactTsFoodOrder.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240511170912_Initial")]
-    partial class Initial
+    [Migration("20240511201416_ModifyFoodClassFields")]
+    partial class ModifyFoodClassFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,86 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("FoodTag", b =>
+                {
+                    b.Property<int>("FoodsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("FoodsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("FoodTag");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "d8bf8bbc-bd75-47e3-85b1-4c57e7bc63e2",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "5cf65179-06b5-4247-ba9c-c47a98ecbfff",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
@@ -72,6 +152,21 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
@@ -91,7 +186,7 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -109,6 +204,14 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -167,10 +270,9 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CookTime")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("Favorite")
+                    b.Property<bool?>("Favorite")
                         .HasColumnType("boolean");
 
                     b.Property<string>("ImageUrl")
@@ -182,25 +284,15 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string[]>("Origins")
-                        .IsRequired()
                         .HasColumnType("text[]");
 
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
-                    b.Property<double>("Stars")
+                    b.Property<double?>("Stars")
                         .HasColumnType("double precision");
 
-                    b.Property<int?>("TagId")
-                        .HasColumnType("integer");
-
-                    b.Property<string[]>("Tags")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TagId");
 
                     b.ToTable("Foods");
                 });
@@ -222,9 +314,33 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("FoodTag", b =>
+                {
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.Food", null)
+                        .WithMany()
+                        .HasForeignKey("FoodsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MinApiReactTsFoodOrder.Entities.ApplicationUser", null)
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -233,7 +349,22 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MinApiReactTsFoodOrder.Entities.ApplicationUser", null)
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -242,23 +373,11 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MinApiReactTsFoodOrder.Entities.ApplicationUser", null)
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.Food", b =>
-                {
-                    b.HasOne("MinApiReactTsFoodOrder.Entities.Tag", null)
-                        .WithMany("Foods")
-                        .HasForeignKey("TagId");
-                });
-
-            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.Tag", b =>
-                {
-                    b.Navigation("Foods");
                 });
 #pragma warning restore 612, 618
         }

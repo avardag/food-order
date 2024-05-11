@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinApiReactTsFoodOrder.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MinApiReactTsFoodOrder.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240511184955_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,13 +68,13 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d8bf8bbc-bd75-47e3-85b1-4c57e7bc63e2",
+                            Id = "d7d7bad0-1b1f-4331-bbee-1d6c5abf7b69",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5cf65179-06b5-4247-ba9c-c47a98ecbfff",
+                            Id = "497c2b40-bb01-4809-9772-d67bccf09bb2",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -267,9 +270,10 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CookTime")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool?>("Favorite")
+                    b.Property<bool>("Favorite")
                         .HasColumnType("boolean");
 
                     b.Property<string>("ImageUrl")
@@ -281,12 +285,13 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string[]>("Origins")
+                        .IsRequired()
                         .HasColumnType("text[]");
 
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
-                    b.Property<double?>("Stars")
+                    b.Property<double>("Stars")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");

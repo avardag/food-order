@@ -17,11 +17,12 @@ public class Food
     public int Id { get; set; }
     public string Name { get; set; }
     public int Price { get; set; }
-    public string CookTime { get; set; }
-    public bool Favorite { get; set; }
-    public string[] Origins { get; set; }
-    public double Stars { get; set; }
+    public string? CookTime { get; set; }
+    public bool? Favorite { get; set; }
+    public string[]? Origins { get; set; }
+    public double? Stars { get; set; }
     public string ImageUrl { get; set; }
-    // public Tag[] Tags { get; set; }
-    public string[] Tags { get; set; }
+
+    public List<Tag> Tags { get; set; } = new List<Tag>();
+    // public string[] Tags { get; set; }
 }
