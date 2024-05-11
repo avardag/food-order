@@ -24,7 +24,7 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Test API", Version = "v1" });
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "FoodOrder API", Version = "v1" });
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -56,7 +56,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 // Add DB Contexts
 // Move the connection string to user secrets for a real app
-builder.Services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=devpass"));
+builder.Services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase")));
 
 builder.Services.AddScoped<TokenService, TokenService>();
 
@@ -70,7 +70,7 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
 // Specify identity requirements
 // Must be added before .AddAuthentication otherwise a 404 is thrown on authorized endpoints
 builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>(options =>
+    .AddIdentity<AppUser, IdentityRole>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
         options.User.RequireUniqueEmail = true;
@@ -127,59 +127,59 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-app.MapGet("/api/food", () =>
-{
-    //load json from data.json
-    var foodJson = File.ReadAllText("data.json");
-    var food = JsonSerializer.Deserialize<List<Food>>(foodJson, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
-    //send food to client
-    return food;
-});
+// app.MapGet("/api/food", () =>
+// {
+//     //load json from data.json
+//     var foodJson = File.ReadAllText("data.json");
+//     var food = JsonSerializer.Deserialize<List<Food>>(foodJson, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
+//     //send food to client
+//     return food;
+// });
 
-app.MapGet("/api/food/search/{searchTerm}", ([FromRoute]string searchTerm) =>
-{
-    //load json from data.json
-    var foodJson = File.ReadAllText("data.json");
-    var foods = JsonSerializer.Deserialize<List<Food>>(foodJson, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
-    //filter foods list to include only those that match searchterm
-    var filteredFoods = foods?.Where(food => food.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
-    //send filtered food to client
-    return filteredFoods;
-});
-//route to return tags
-app.MapGet("api/tags", () =>
-{
-    //load json from tags.json
-    var tagsJson = File.ReadAllText("tags.json");
-    var tags = JsonSerializer.Deserialize<List<TagToReturnDto>>(tagsJson,
-        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-    //send tags to client
-    return tags;
-});
-
-//route to return food by tag
-app.MapGet("/api/food/tag/{tag}", ([FromRoute] string tag) =>
-{
-    //load json from data.json
-    var foodJson = File.ReadAllText("data.json");
-    var foods = JsonSerializer.Deserialize<List<Food>>(foodJson,
-        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-    //filter foods list to include only those that match tag
-    var filteredFoods = foods?.Where(food => food.Tags.Contains(tag)).ToList();
-    //send filtered food to client
-    return filteredFoods;
-});
-//route to return food by id
-app.MapGet("/api/food/{foodId:int}", ([FromRoute] int foodId) =>
-{
-    //load json from data.json
-    var foodJson = File.ReadAllText("data.json");
-    var foods = JsonSerializer.Deserialize<List<Food>>(foodJson,
-        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-    //filter foods list to include only those that match id
-    var filteredFoods = foods?.Where(food => food.Id == foodId).ToList();
-    //send filtered food to client
-    return filteredFoods;
-});
+// app.MapGet("/api/food/search/{searchTerm}", ([FromRoute]string searchTerm) =>
+// {
+//     //load json from data.json
+//     var foodJson = File.ReadAllText("data.json");
+//     var foods = JsonSerializer.Deserialize<List<Food>>(foodJson, new JsonSerializerOptions(){PropertyNameCaseInsensitive = true});
+//     //filter foods list to include only those that match searchterm
+//     var filteredFoods = foods?.Where(food => food.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+//     //send filtered food to client
+//     return filteredFoods;
+// });
+// //route to return tags
+// app.MapGet("api/tags", () =>
+// {
+//     //load json from tags.json
+//     var tagsJson = File.ReadAllText("tags.json");
+//     var tags = JsonSerializer.Deserialize<List<TagToReturnDto>>(tagsJson,
+//         new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+//     //send tags to client
+//     return tags;
+// });
+//
+// //route to return food by tag
+// app.MapGet("/api/food/tag/{tag}", ([FromRoute] string tag) =>
+// {
+//     //load json from data.json
+//     var foodJson = File.ReadAllText("data.json");
+//     var foods = JsonSerializer.Deserialize<List<Food>>(foodJson,
+//         new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+//     //filter foods list to include only those that match tag
+//     var filteredFoods = foods?.Where(food => food.Tags.Contains(tag)).ToList();
+//     //send filtered food to client
+//     return filteredFoods;
+// });
+// //route to return food by id
+// app.MapGet("/api/food/{foodId:int}", ([FromRoute] int foodId) =>
+// {
+//     //load json from data.json
+//     var foodJson = File.ReadAllText("data.json");
+//     var foods = JsonSerializer.Deserialize<List<Food>>(foodJson,
+//         new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+//     //filter foods list to include only those that match id
+//     var filteredFoods = foods?.Where(food => food.Id == foodId).ToList();
+//     //send filtered food to client
+//     return filteredFoods;
+// });
 
 app.Run();

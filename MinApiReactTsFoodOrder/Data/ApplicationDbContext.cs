@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MinApiReactTsFoodOrder.Entities;
 
 namespace MinApiReactTsFoodOrder.Data;
 
-public class ApplicationDbContext : IdentityUserContext<ApplicationUser>
+public class ApplicationDbContext : IdentityDbContext<AppUser>
 {
     public DbSet<Food> Foods => Set<Food>();
     public DbSet<Tag> Tags => Set<Tag>();

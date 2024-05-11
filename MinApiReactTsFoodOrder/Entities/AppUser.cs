@@ -3,7 +3,7 @@ using MinApiReactTsFoodOrder.Enums;
 
 namespace MinApiReactTsFoodOrder.Entities;
 
-public class ApplicationUser : IdentityUser
+public class AppUser : IdentityUser
 {
     public Role Role { get; set; }
 }
