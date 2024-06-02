@@ -1,7 +1,6 @@
 namespace MinApiReactTsFoodOrder.DTOs;
 
-public class TagToReturnDto
+public class NewTagDto
 {
     public string Name { get; set; }
-    public int Count { get; set; }
 }

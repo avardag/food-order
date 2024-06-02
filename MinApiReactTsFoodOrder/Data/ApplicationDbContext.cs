@@ -36,23 +36,26 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         };
         modelBuilder.Entity<IdentityRole>().HasData(roles);
         
-        // // Seed AspNetUsers table with default admin user
-        // var hasher = new PasswordHasher<AppUser>();
-        //
-        // var adminEmail = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("SiteSettings")["AdminEmail"];
-        // var adminPassword = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("SiteSettings")["AdminPassword"];
-        //
-        // modelBuilder.Entity<AppUser>().HasData(
-        //     new AppUser
-        //     {
-        //         Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111", // primary key
-        //         UserName = "admin",
-        //         NormalizedUserName = adminEmail.ToUpper(),
-        //         PasswordHash = hasher.HashPassword(null, adminPassword),
-        //         Email = adminEmail,
-        //         NormalizedEmail = adminEmail.ToUpper(),
-        //         Role = Role.Admin
-        //     }
-        // );
+        // Seed AspNetUsers table with default admin user
+        var hasher = new PasswordHasher<AppUser>();
+        
+        var adminEmail = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("SiteSettings")["AdminEmail"];
+        var adminPassword = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("SiteSettings")["AdminPassword"];
+        
+        modelBuilder.Entity<AppUser>().HasData(
+            new AppUser
+            {
+                Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111", // primary key
+                UserName = "admin",
+                NormalizedUserName = "admin".ToUpper(),
+                PasswordHash = hasher.HashPassword(null, adminPassword),
+                Email = adminEmail,
+                NormalizedEmail = adminEmail.ToUpper(),
+                Role = Role.Admin,
+                FirstName = "Maga",
+                LastName = "Bagaev",
+                EmailConfirmed = true
+            }
+        );
     }
 }

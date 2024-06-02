@@ -10,9 +10,9 @@ export interface Food {
   tags: string[];
 }
 
-export interface TagList {
+export interface Tag {
+  id: string;
   name: string;
-  count?: number;
 }
 
 export interface ICartItem {
@@ -20,3 +20,14 @@ export interface ICartItem {
   quantity: number;
 }
 
+export interface IUser {
+  userName: string;
+  email: string;
+  token: string;
+  role: "Admin" | "User";
+}
+
+export interface LoginInput {
+  email: string;
+  password: string;
+}

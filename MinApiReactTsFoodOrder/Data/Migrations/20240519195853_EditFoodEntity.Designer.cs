@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinApiReactTsFoodOrder.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MinApiReactTsFoodOrder.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240519195853_EditFoodEntity")]
+    partial class EditFoodEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,13 +69,13 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "84209737-132a-42e5-bb73-887c01890922",
+                            Id = "d4192832-0ba1-4386-b908-95779b0ef356",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "3b6096ba-1b33-4e64-bd90-07f0f1a4b4f2",
+                            Id = "91a222b9-df91-438a-a4d8-441653420e5c",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -263,7 +266,7 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                         {
                             Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fa271a05-6e4f-41d3-b9b8-def835c1089c",
+                            ConcurrencyStamp = "d8c9a38e-9329-4524-9fd8-210a18dcfb5c",
                             Email = "admin@foodorder.com",
                             EmailConfirmed = true,
                             FirstName = "Maga",
@@ -271,10 +274,10 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOODORDER.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIZTEjgWmYD9aevPHYtSl3egHKHpsakT0zhlATn+ZQmRLO9vn24fR/bWbUldtt/f3A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBYJfC49xu/yi7vWrx8/80WAHpRDZRhA77pYjLJHy3CaMsutBnhZQ8ERGazjNWmW/g==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "61890343-7ece-409d-b5cb-13feff43da44",
+                            SecurityStamp = "5782562f-7639-4959-a750-a501075796fa",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

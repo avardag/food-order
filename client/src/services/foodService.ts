@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Food, TagList } from "../shared/types";
+import { Food, Tag } from "../shared/types";
 
 export const getAll = async (): Promise<Food[]> => {
   const { data } = await axios.get("/api/food");
@@ -11,8 +11,8 @@ export const searchFood = async (searchTerm: string): Promise<Food[]> => {
   return data;
 };
 
-export const getAllTags = async (): Promise<TagList[]> => {
-  const { data } = await axios.get("/api/tags");
+export const getAllTags = async (): Promise<Tag[]> => {
+  const { data } = await axios.get("/api/tag");
   return data;
 };
 
@@ -26,4 +26,3 @@ export const getById = async (id: number): Promise<Food> => {
   const { data } = await axios.get("/api/food/" + id);
   return data;
 };
-

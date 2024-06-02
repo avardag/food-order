@@ -19,8 +19,11 @@ public class AccountController : ControllerBase
     private readonly TokenService _tokenService;
     private readonly SignInManager<AppUser> _signinManager;
 
-    public AccountController(UserManager<AppUser> userManager, TokenService tokenService,
-        SignInManager<AppUser> signInManager)
+    public AccountController(
+        UserManager<AppUser> userManager,
+        TokenService tokenService,
+        SignInManager<AppUser> signInManager
+    )
     {
         _userManager = userManager;
         _tokenService = tokenService;
@@ -33,20 +36,25 @@ public class AccountController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+        var user = await _userManager.Users.FirstOrDefaultAsync(x =>
+            x.Email == loginDto.Email.ToLower()
+        );
 
-        if (user == null) return Unauthorized("Invalid username!");
+        if (user == null)
+            return Unauthorized("Invalid username!");
 
         var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-        if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
+        if (!result.Succeeded)
+            return Unauthorized("Username not found and/or password incorrect");
 
         return Ok(
             new NewUserDto
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                Role = user.Role
             }
         );
     }
@@ -80,7 +88,8 @@ public class AccountController : ControllerBase
                         {
                             UserName = appUser.UserName,
                             Email = appUser.Email,
-                            Token = _tokenService.CreateToken(appUser)
+                            Token = _tokenService.CreateToken(appUser),
+                            Role = appUser.Role
                         }
                     );
                 }
@@ -100,3 +109,4 @@ public class AccountController : ControllerBase
         }
     }
 }
+
