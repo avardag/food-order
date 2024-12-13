@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MinApiReactTsFoodOrder.Data.Migrations
+namespace MinApiReactTsFoodOrder.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -35,7 +35,7 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
 
                     b.HasIndex("TagsId");
 
-                    b.ToTable("FoodTag");
+                    b.ToTable("FoodTag", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -62,20 +62,6 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "84209737-132a-42e5-bb73-887c01890922",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "3b6096ba-1b33-4e64-bd90-07f0f1a4b4f2",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -263,7 +249,7 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                         {
                             Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fa271a05-6e4f-41d3-b9b8-def835c1089c",
+                            ConcurrencyStamp = "1a9c6c4d-2520-4dd1-9ff1-b5e9a15af1e4",
                             Email = "admin@foodorder.com",
                             EmailConfirmed = true,
                             FirstName = "Maga",
@@ -271,12 +257,56 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOODORDER.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIZTEjgWmYD9aevPHYtSl3egHKHpsakT0zhlATn+ZQmRLO9vn24fR/bWbUldtt/f3A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOjLtUgigZmTEqNTqMubGSoP10f7e7XGQLBYf7MeI/J0KJzmU+w11n5IoLSV0NQFgA==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "61890343-7ece-409d-b5cb-13feff43da44",
+                            SecurityStamp = "1aa8b332-d110-47e8-9019-7fd4d215cb25",
                             TwoFactorEnabled = false,
                             UserName = "admin"
+                        });
+                });
+
+            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Appetizer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Main Course"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Dessert"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Salad"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Soup"
                         });
                 });
 
@@ -288,7 +318,10 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CookTime")
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<bool?>("Favorite")
@@ -297,6 +330,9 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -308,10 +344,12 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("Stars")
-                        .HasColumnType("double precision");
+                    b.Property<decimal?>("Stars")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Foods");
                 });
@@ -331,6 +369,83 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 9,
+                            Name = "Breakfast"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Lunch"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Dinner"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Dessert"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Snack"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Vegetarian"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Vegan"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Gluten-Free"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Healthy"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Low-Carb"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Spicy"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Comfort Food"
+                        });
+                });
+
+            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.UserFavoriteFood", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FoodId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "FoodId");
+
+                    b.HasIndex("FoodId");
+
+                    b.ToTable("UserFavoriteFoods");
                 });
 
             modelBuilder.Entity("FoodTag", b =>
@@ -397,6 +512,36 @@ namespace MinApiReactTsFoodOrder.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.Food", b =>
+                {
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MinApiReactTsFoodOrder.Entities.UserFavoriteFood", b =>
+                {
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.Food", "Food")
+                        .WithMany()
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MinApiReactTsFoodOrder.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Food");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,6 +11,7 @@ using MinApiReactTsFoodOrder.Data;
 using MinApiReactTsFoodOrder.DTOs;
 using MinApiReactTsFoodOrder.Entities;
 using MinApiReactTsFoodOrder.Extensions;
+using MinApiReactTsFoodOrder.Profiles;
 using MinApiReactTsFoodOrder.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,9 @@ builder.Services.ConfigureHttpJsonOptions(opts =>
 });
 
 builder.RegisterAuthentication();
+
+// builder.Services.AddAutoMapper(typeof(FoodProfiles));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

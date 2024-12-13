@@ -1,3 +1,5 @@
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinApiReactTsFoodOrder.Data;
@@ -6,6 +8,7 @@ using MinApiReactTsFoodOrder.Entities;
 
 namespace MinApiReactTsFoodOrder.Controllers;
 
+[ApiVersion(1.0)]
 [Route("api/[controller]")]
 [ApiController]
 public class TagController : ControllerBase
@@ -42,22 +45,25 @@ public class TagController : ControllerBase
                 return NotFound();
             }
 
-            return tag;
-        }
+            return Ok(tag);        }
 
-        // POST: api/tags
         [HttpPost]
-        public async Task<ActionResult<Tag>> CreateTag(NewTagDto newTagDto)
+        public async Task<IActionResult> CreateTag(string tagName)
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(tagName))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Tag name cannot be empty or whitespace.");
             }
 
-            var newTag = new Tag
+            // Check if tag already exists (case-insensitive)
+            var existingTag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.ToLower() == tagName.ToLower());
+            if (existingTag != null)
             {
-                Name = newTagDto.Name
-            };
+                return Conflict("A tag with this name already exists.");
+            }
+
+            var newTag = new Tag { Name = tagName };
+
             _context.Tags.Add(newTag);
             await _context.SaveChangesAsync();
 
@@ -66,20 +72,26 @@ public class TagController : ControllerBase
 
         // PUT: api/tags/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTag(int id, TagDto tag)
+        public async Task<IActionResult> UpdateTag(int id, string newTagName)
         {
-            if (id != tag.Id)
+            if (string.IsNullOrWhiteSpace(newTagName))
             {
-                return BadRequest();
+                return BadRequest("Tag name cannot be empty or whitespace.");
             }
-            //find tag in db
-            var existingTag = await _context.Tags.FindAsync(id);
-            if (existingTag == null)
+
+            var tag = await _context.Tags.FindAsync(id);
+
+            if (tag == null)
             {
                 return NotFound();
             }
-            //update existing tag
-            existingTag.Name = tag.Name;
+            var existingTag = await _context.Tags.FirstOrDefaultAsync(t => t.Name.ToLower() == newTagName.ToLower() && t.Id != id);
+            if (existingTag != null)
+            {
+                return Conflict("A tag with this name already exists.");
+            }
+
+            tag.Name = newTagName;
 
             try
             {
@@ -97,10 +109,11 @@ public class TagController : ControllerBase
                 }
             }
 
-            return NoContent();
+            return NoContent(); // 204 No Content for successful update
         }
 
         // DELETE: api/tags/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTag(int id)
         {
