@@ -23,9 +23,9 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         
-        // Check if roles are already seeded
-        if (!modelBuilder.Model.GetEntityTypes().Any(e => e.Name == typeof(IdentityRole).FullName))
-        {
+        // // Check if roles are already seeded
+        // if (!modelBuilder.Model.GetEntityTypes().Any(e => e.Name == typeof(IdentityRole).FullName))
+        // {
             List<IdentityRole> roles = new List<IdentityRole>
             {
                 new IdentityRole
@@ -40,7 +40,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
                 },
             };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
-        }
+        // }
         
         // Seed AspNetUsers table with default admin user
         var hasher = new PasswordHasher<AppUser>();

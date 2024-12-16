@@ -1,5 +1,3 @@
-import styles from "./button.module.css";
-
 interface ButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   text: string;
@@ -22,8 +20,9 @@ export default function Button({
   height = "3.5rem",
 }: ButtonProps) {
   return (
-    <div className={styles.container}>
+    <div className="flex justify-center w-full">
       <button
+        className="w-full opacity-80 mx-auto my-4 rounded-xl border-none hover:cursor-pointer hover:opacity-100 outline-none"
         style={{
           color,
           backgroundColor,

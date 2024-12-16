@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Food, TagList } from "../../shared/types";
+import { Food, TagWithCount } from "../../shared/types";
 import {
   getAll,
   getAllFoodsByTag,
@@ -14,7 +14,7 @@ import NotFound from "../../components/NotFound";
 
 export default function HomePage() {
   const [foods, setFoods] = useState<Food[]>([]);
-  const [tags, setTags] = useState<TagList[]>([]);
+  const [tags, setTags] = useState<TagWithCount[]>([]);
 
   const { searchTerm, tagName } = useParams();
 
@@ -23,8 +23,8 @@ export default function HomePage() {
       const response = tagName
         ? await getAllFoodsByTag(tagName)
         : searchTerm
-          ? await searchFood(searchTerm)
-          : await getAll();
+        ? await searchFood(searchTerm)
+        : await getAll();
       // const data = await response.json();
       setFoods(response);
     };
@@ -40,8 +40,8 @@ export default function HomePage() {
   return (
     <>
       <Search />
-      <Tags tags={tags} showCount />
-      {foods.length === 0 && <NotFound />}
+      <Tags tags={[{ name: "All" }, ...tags]} showCount />
+      {foods.length === 0 && <NotFound linkText="Reset Search" />}
       <Thumbnails foods={foods} />
     </>
   );

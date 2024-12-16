@@ -89,7 +89,7 @@ public class FoodController : ControllerBase
         var foods = await _dbContext.Foods
             .Include(f => f.Category) // Optional: Include Category
             .Include(f => f.Tags) // Optional: Include Tags
-            .Where(f => f.Name.ToLower().Contains(searchTerm)) // Case-insensitive search
+            .Where(f => f.Name.ToLower().Contains(searchTerm.ToLower())) // Case-insensitive search
             .ToListAsync();
         
         var foodDtos = _mapper.Map<List<FoodDto>>(foods);

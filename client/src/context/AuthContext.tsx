@@ -1,9 +1,10 @@
 import { createContext } from "react";
-import { IUser } from "../shared/types";
+import { IUser, IUserRegisterDto, LoginInput } from "../shared/types";
 
 export interface IAuthContext {
   user: IUser | null;
-  login: (email: string, password: string) => void;
+  login: (logindata: LoginInput) => void;
+  register: (userData: IUserRegisterDto) => void;
   logout: () => void;
 }
 

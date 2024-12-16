@@ -1,5 +1,6 @@
 import axios from "axios";
-import { IUser } from "../shared/types";
+import { IUser, IUserRegisterDto, LoginInput } from "../shared/types";
+import { handleErrorResponse } from "../utils";
 
 export const getUser = () => {
   const user = localStorage.getItem("user");
@@ -13,50 +14,32 @@ interface ApiResponse {
 
 interface ApiError {
   message: string;
-  // status: number;
+  status: number;
 }
 
-export const login = async (email: string, password: string) => {
+export const loginUser = async ({
+  email,
+  password,
+}: LoginInput): Promise<IUser> => {
   try {
     const { data } = await axios.post("api/account/login", { email, password });
     localStorage.setItem("user", JSON.stringify(data));
     return data;
   } catch (err) {
-    if (axios.isAxiosError(err)) {
-      // Access to config, request, and response
-      // return { message: err.message, status: err.status };
-      return { message: err.message };
-    } else if (err instanceof Error) {
-      // Just a stock error
-      return { message: err.message };
-    } else {
-      // unknown
-      throw new Error("different error than axios");
-    }
+    throw handleErrorResponse(err);
   }
 };
 
-// export const login = async (
-//   email: string,
-//   password: string,
-// ): Promise<ApiResponse | ApiError> => {
-//   try {
-//     const { data } = await axios.post("api/account/login", { email, password });
-//     localStorage.setItem("user", JSON.stringify(data));
-//     return data;
-//   } catch (err) {
-//     if (axios.isAxiosError(err)) {
-//       // Access to config, request, and response
-//       // return { message: err.message, status: err.status };
-//       return { message: err.message };
-//     } else if (err instanceof Error) {
-//       // Just a stock error
-//       return { message: err.message };
-//     } else {
-//       // unknown
-//       throw new Error("different error than axios");
-//     }
-//   }
-// };
-//
+export const registerUser = async (
+  registerData: IUserRegisterDto
+): Promise<IUser> => {
+  try {
+    const { data } = await axios.post("api/account/register", registerData);
+    localStorage.setItem("user", JSON.stringify(data));
+    return data;
+  } catch (err) {
+    throw handleErrorResponse(err);
+  }
+};
+
 export const logout = () => localStorage.removeItem("user");

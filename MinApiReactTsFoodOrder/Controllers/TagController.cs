@@ -22,13 +22,15 @@ public class TagController : ControllerBase
     
     // GET: api/tags
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TagDto>>> GetTags()
+        public async Task<ActionResult<IEnumerable<TagWithCount>>> GetTags()
         {
             var tags = await _context.Tags
-                .Select(t => new TagDto
+                .Include(t=>t.Foods)
+                .Select(t => new 
                 {
                     Id = t.Id,
-                    Name = t.Name
+                    Name = t.Name,
+                    Count = t.Foods.Count
                 })
                 .ToListAsync();
             return Ok(tags);

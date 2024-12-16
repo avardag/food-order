@@ -1,8 +1,8 @@
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import styles from "./loginPage.module.css";
 import Title from "../../components/Title";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -28,16 +28,25 @@ export default function LoginPage() {
     if (!user) return;
     //if there is a user redirect to returnUrl or home
     returnUrl ? navigate(returnUrl) : navigate("/");
-  }, [user]);
+  }, [user, returnUrl, navigate]);
 
   const onSubmit: SubmitHandler<IFormInput> = async ({ email, password }) => {
-    await login(email, password);
+    try {
+      await login({ email, password });
+      toast.success("Login successful");
+    } catch (err) {
+      toast.error("Login failed");
+    }
   };
   return (
-    <div className={styles.container}>
-      <div className={styles.details}>
-        <Title title="Login" />
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <div className="flex justify-center items-center h-full mt-12">
+      <div className="w-96">
+        <Title title="Login" fontSize={32} margin="1.5rem 0" />
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="flex flex-col justify-center"
+        >
           <Input
             type="email"
             label="Email"
@@ -62,9 +71,12 @@ export default function LoginPage() {
 
           <Button type="submit" text="Login" />
 
-          <div className={styles.register}>
+          <div className="flex justify-center items-center">
             New user? &nbsp;
-            <Link to={`/register${returnUrl ? "?returnUrl=" + returnUrl : ""}`}>
+            <Link
+              to={`/register${returnUrl ? "?returnUrl=" + returnUrl : ""}`}
+              className="text-red-600"
+            >
               Register here
             </Link>
           </div>

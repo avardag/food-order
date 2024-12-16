@@ -1,6 +1,5 @@
 import React from "react";
 import InputContainer from "../InputContainer";
-import styles from "./input.module.css";
 import { FieldError } from "react-hook-form";
 
 interface InputProps {
@@ -15,7 +14,7 @@ interface InputProps {
 
 function InputComponent(
   { label, type, defaultValue, onChange, onBlur, name, error }: InputProps,
-  ref: React.LegacyRef<HTMLInputElement> | undefined,
+  ref: React.LegacyRef<HTMLInputElement> | undefined
 ) {
   const getErrorMessage = () => {
     if (!error) return null;
@@ -35,7 +34,7 @@ function InputComponent(
     <InputContainer label={label}>
       <input
         defaultValue={defaultValue}
-        className={styles.input}
+        className="w-full h-full transition-[border-width] duration-[0.15s] ease-[ease-out] bg-white text-lg border-b-grey-300  focus:border-b-2 outline-none"
         type={type}
         placeholder={label}
         ref={ref}
@@ -43,7 +42,11 @@ function InputComponent(
         onChange={onChange}
         onBlur={onBlur}
       />
-      {error && <div className={styles.error}>{getErrorMessage()}</div>}
+      {error && (
+        <div className="flex justify-center items-center absolute h-full w-48 text-red-500 text-center text-sm right-0 top-0">
+          {getErrorMessage()}
+        </div>
+      )}
     </InputContainer>
   );
 }
