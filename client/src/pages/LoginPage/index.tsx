@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import Title from "../../components/Title";
 import Input from "../../components/Input";
@@ -20,9 +25,11 @@ export default function LoginPage() {
   } = useForm<IFormInput>();
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, login } = useAuth();
   const [params] = useSearchParams();
   const returnUrl = params.get("returnUrl");
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     if (!user) return;
@@ -34,6 +41,10 @@ export default function LoginPage() {
     try {
       await login({ email, password });
       toast.success("Login successful");
+      // Send them back to the page they tried to visit when they were
+      // redirected to the login page. Use { replace: true } so we don't create
+      // another entry in the history stack for the login page.
+      navigate(from, { replace: true });
     } catch (err) {
       toast.error("Login failed");
     }

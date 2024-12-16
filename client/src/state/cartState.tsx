@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { CartContext } from "./context/CartContext";
-import { ICartItem, Food } from "./shared/types";
+import { CartContext } from "../context/CartContext";
+import { ICartItem, Food } from "../shared/types";
 
 //constants for cart in <LocalStorage>
 const CART_KEY = "cartItems";
@@ -25,11 +25,11 @@ interface CartStoreProviderProps {
 export const CartStoreProvider = ({ children }: CartStoreProviderProps) => {
   const initState = getCartFromLocalStorage();
   const [cartItems, setCartItems] = useState<ICartItem[]>(
-    initState.items || [],
+    initState.items || []
   );
   const [totalPrice, setTotalPrice] = useState(initState.totalPrice || 0);
   const [totalQuantity, setTotalQuantity] = useState(
-    initState.totalQuantity || 0,
+    initState.totalQuantity || 0
   );
 
   //get cart state from localStorage.
@@ -41,7 +41,7 @@ export const CartStoreProvider = ({ children }: CartStoreProviderProps) => {
   useEffect(() => {
     const totalPrice = cartItems.reduce(
       (acc, curr) => acc + curr.product.price * curr.quantity,
-      0,
+      0
     );
     const totalCount = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
     setTotalPrice(totalPrice);
@@ -53,7 +53,7 @@ export const CartStoreProvider = ({ children }: CartStoreProviderProps) => {
         items: cartItems,
         totalPrice,
         totalQuantity,
-      }),
+      })
     );
   }, [cartItems, totalQuantity]);
 
@@ -63,7 +63,7 @@ export const CartStoreProvider = ({ children }: CartStoreProviderProps) => {
 
     // Find the index of the product in the cart
     const existingCartItem = currentCartItems.find(
-      (item) => item.product.id === product.id,
+      (item) => item.product.id === product.id
     );
 
     // If the product is already in the cart, update the quantity
@@ -110,7 +110,7 @@ export const CartStoreProvider = ({ children }: CartStoreProviderProps) => {
   //removes item completely from cart
   const removeItemFromCart = (product: Food) => {
     const filteredItems = cartItems.filter(
-      (item) => item.product.id !== product.id,
+      (item) => item.product.id !== product.id
     );
     setCartItems(filteredItems);
   };
@@ -125,8 +125,8 @@ export const CartStoreProvider = ({ children }: CartStoreProviderProps) => {
 
     setCartItems(
       cartItems.map((item) =>
-        item.product.id === product.id ? changedCartItem : item,
-      ),
+        item.product.id === product.id ? changedCartItem : item
+      )
     );
   };
 

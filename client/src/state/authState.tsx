@@ -1,7 +1,7 @@
-import * as userService from "./services/userService";
-import { AuthContext } from "./context/AuthContext";
+import * as userService from "../services/userService";
+import { AuthContext } from "../context/AuthContext";
 import { useState } from "react";
-import { IUserRegisterDto, LoginInput } from "./shared/types";
+import { IUserRegisterDto, LoginInput } from "../shared/types";
 
 interface AuthProviderProps {
   children: JSX.Element | JSX.Element[];
